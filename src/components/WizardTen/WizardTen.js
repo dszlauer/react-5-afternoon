@@ -1,22 +1,51 @@
-import React,  { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { updateFirst, updateLast, updateEmail } from "../../ducks/reducer";
 
 class WizardTen extends Component {
-    render(){
-        return(
-            <div className="parent-div">
-                <div className="vert-align">                    
-                    
-                    <p>What is your name?</p> <br />
+  render() {
+    const { updateFirst, updateLast, updateEmail } = this.props;
 
-                    <input type="text" placeholder="First Name" onChange={this.props.updateFirst}/>
-                    <input type="text" placeholder="Last Name" onChange= {this.props.updateLast}/>
-                    <input type="text" placeholder="email" onChange={this.props.updateEmail}/>
-                    
-                    <Link to="/wEleven"><button className="margin-btn"> Next </button></Link>
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div className="parent-div">
+        <div className="vert-align">
+          <p>What is your name?</p> <br />
+          <input
+            type="text"
+            placeholder="First Name"
+            onChange={e => updateFirst(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            onChange={e => updateLast(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="email"
+            onChange={e => updateEmail(e.target.value)}
+          />
+          <Link to="/wEleven">
+            <button className="margin-btn"> Next </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 }
-export default WizardTen;
+
+function mapStateToProps(state) {
+  const { first, last, email } = state;
+
+  return {
+    first,
+    last,
+    email
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { updateFirst, updateLast, updateEmail }
+)(WizardTen);
